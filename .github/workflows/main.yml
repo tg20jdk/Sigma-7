@@ -1,5 +1,5 @@
 name: crd
- timeout-minutes: 360 # 6 hours
+ 
 on: 
   workflow_dispatch:
     inputs:
