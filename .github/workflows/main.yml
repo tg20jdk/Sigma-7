@@ -18,10 +18,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Initializing Setup
-      run: Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
-& {$P = $env:TEMP + '\chromeremotedesktophost.msi'; Invoke-WebRequest 'https://dl.google.com/edgedl/chrome-remote-desktop/chromeremotedesktophost.msi' -OutFile $P; Start-Process $P -Wait; Remove-Item $P}
-& {$P = $env:TEMP + '\chrome_installer.exe'; Invoke-WebRequest 'https://dl.google.com/edgedl/chrome/install/GoogleChromeStandaloneEnterprise.msi' -OutFile $P; Start-Process -FilePath msiexec -Args "/i $P /quiet" -Wait; Remove-Item $P}
-    - name: Starting CRD
-      run: ${{ github.event.inputs.authcode }} -pin=${{ github.event.inputs.pincode }}
+    - run: ./setup.ps1
     - name: Keep Alive
       run: ./timeout.ps1
