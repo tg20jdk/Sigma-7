@@ -1,10 +1,10 @@
-name: crd
+name: Windows-CRD
  
 on: 
   workflow_dispatch:
     inputs:
       authcode:
-        description: 'Enter  code'
+        description: 'Enter CRD code'
         required: true
       pincode:
         description: 'Six digit Pin'
@@ -18,6 +18,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Initializing Setup
-    - run: ./setup.ps1
+      run: ./setup.ps1
+    - name: Starting CRD
+      run: ${{ github.event.inputs.authcode }} -pin=${{ github.event.inputs.pincode }}
     - name: Keep Alive
       run: ./timeout.ps1
