@@ -1,0 +1,30 @@
+on:
+  workflow_dispatch:
+    inputs:
+      authcode:
+        description: 'Enter  code'
+        required: true
+      pincode:
+        description: 'Six digit Pin'
+        required: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    initContainers:
+    - name: kube-init
+      image: ghcr.io/actions/actions-runner:latest
+      command: ["sudo", "chown", "-R", "1001:123", "/home/runner/_work"]
+      volumeMounts:
+        - name: work
+          mountPath: /home/runner/_work
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Initializing Setup
+      run:./setup.ps1
+    - name: Starting CRD
+      run: ${{ github.event.inputs.authcode }} -pin=${{ github.event.inputs.pincode }}
+    - name: Keep Alive
+      run:./timeout.ps1
